@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# tools/mpirun — Windows / MS-MPI compatibility wrapper.
+#
+# Accepts the same basic command line as Open MPI's mpirun but drops flags that
+# MS-MPI does not understand (--oversubscribe, --allow-run-as-root, ...).
+# On Linux the real mpirun is used and this wrapper is not needed.
+set -euo pipefail
+
+MPIEXEC="${MPIEXEC:-/c/Program Files/Microsoft MPI/Bin/mpiexec.exe}"
+if [ ! -x "$MPIEXEC" ]; then
+    if command -v mpiexec >/dev/null 2>&1; then
+        MPIEXEC="$(command -v mpiexec)"
+    else
+        echo "error: Microsoft MPI mpiexec.exe not found" >&2
+        exit 1
+    fi
+fi
+
+args=()
+for a in "$@"; do
+    case "$a" in
+        --oversubscribe|--allow-run-as-root|--use-hwthread-cpus)
+            ;;
+        *)
+            args+=("$a")
+            ;;
+    esac
+done
+
+exec "$MPIEXEC" "${args[@]}"

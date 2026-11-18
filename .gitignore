@@ -1,0 +1,30 @@
+# Generated datasets (never commit / never package)
+data/*.csv
+data/*.bin
+*.csv.gz
+
+# Build artifacts
+bin/
+*.o
+*.obj
+*.exe
+
+# Temporary outputs
+tmp/
+Python/
+results/run_outputs/
+report/report.html
+report/report.aux
+report/report.log
+report/report.out
+report/report.toc
+
+# Submission archive
+Group-01_ResultAnalysis.zip
+*_ResultAnalysis.zip
+
+# Editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# tools/mpicc — Windows / MS-MPI compatibility wrapper.
+#
+# On the lab Linux machines and on Colab the real `mpicc` from Open MPI is used.
+# Microsoft MPI has no compiler driver, so this wrapper forwards every argument
+# to GCC and links the MS-MPI import library.
+#
+# It is used automatically by the Makefile only when `mpicc` is not on PATH.
+set -euo pipefail
+
+GCC_BIN="${GCC_BIN:-}"
+if [ -z "$GCC_BIN" ]; then
+    for cand in /ucrt64/bin/gcc /mingw64/bin/gcc; do
+        if [ -x "$cand" ]; then
+            GCC_BIN="$cand"
+            break
+        fi
+    done
+fi
+if [ -z "$GCC_BIN" ]; then
+    GCC_BIN="$(command -v gcc)"
+fi
+
+exec "$GCC_BIN" "$@" -lmsmpi
