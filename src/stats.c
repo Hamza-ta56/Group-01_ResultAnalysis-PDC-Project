@@ -1,5 +1,5 @@
 /*
- * stats.c — shared, deterministic statistics engine.
+ * stats.c - shared, deterministic statistics engine.
  *
  * All arithmetic on marks is integer (long long); division into floating point
  * happens only once, in stats_finalize().  This is required because ten

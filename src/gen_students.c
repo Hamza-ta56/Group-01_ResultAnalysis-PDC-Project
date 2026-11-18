@@ -1,4 +1,4 @@
-/* gen_students.c — usage: ./gen_students <num_students> <output.csv> */
+/* gen_students.c - usage: ./gen_students <num_students> <output.csv> */
 #include <stdio.h>
 #include <stdlib.h>
 

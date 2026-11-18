@@ -1,5 +1,5 @@
 /*
- * stats.h — shared statistics engine.
+ * stats.h - shared statistics engine.
  *
  * Every version (sequential, OpenMP, MPI, hybrid) calls the very same
  * functions, which is what guarantees bit-identical output.

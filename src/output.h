@@ -1,5 +1,5 @@
 /*
- * output.h — the single canonical output formatter.
+ * output.h - the single canonical output formatter.
  *
  * All four versions print through this module, so the correctness check can
  * compare whole stdout streams with diff.

@@ -1,5 +1,5 @@
 /*
- * common.h — shared CSV dataset loader used by all four versions.
+ * common.h - shared CSV dataset loader used by all four versions.
  *
  * Storage layout (chosen for cache efficiency and cheap MPI scatter):
  *   rolls[i]          : int            (4 bytes per student)

@@ -1,5 +1,5 @@
 /*
- * mpi.c — distributed-memory version (MPI, rank 0 reads and scatters).
+ * mpi.c - distributed-memory version (MPI, rank 0 reads and scatters).
  *
  * Data flow
  * ---------

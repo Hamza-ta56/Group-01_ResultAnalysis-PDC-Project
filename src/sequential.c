@@ -1,5 +1,5 @@
 /*
- * sequential.c — baseline implementation.
+ * sequential.c - baseline implementation.
  *
  * Reads the CSV into memory, analyzes it in one pass, prints the eight
  * statistics.  It is the correctness reference for every parallel version.

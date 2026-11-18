@@ -1,5 +1,5 @@
 /*
- * common.c — shared streaming CSV reader.
+ * common.c - shared streaming CSV reader.
  *
  * Design notes
  * ------------

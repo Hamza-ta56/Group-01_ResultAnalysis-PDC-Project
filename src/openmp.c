@@ -1,5 +1,5 @@
 /*
- * openmp.c — shared-memory parallel version (fork-join, OpenMP).
+ * openmp.c - shared-memory parallel version (fork-join, OpenMP).
  *
  * Strategy
  * --------
