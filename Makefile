@@ -26,7 +26,8 @@ OMP     := $(BIN)/omp$(EXE)
 MPIBIN  := $(BIN)/mpi$(EXE)
 GEN     := $(BIN)/gen_students$(EXE)
 
-.PHONY: all gen seq omp mpi datasets test clean
+.PHONY: all gen seq omp mpi datasets test correctness bench machine-info \
+        summarize plots clean
 
 all: seq omp mpi
 
@@ -63,6 +64,21 @@ test: all
 	./$(SEQ) $(DATA)/small.csv
 	@echo "== OpenMP 4 threads on small =="
 	OMP_NUM_THREADS=4 ./$(OMP) $(DATA)/small.csv
+
+correctness: all
+	bash scripts/check_correctness.sh
+
+bench: all
+	bash scripts/run_benchmarks.sh
+
+machine-info:
+	bash scripts/machine_info.sh
+
+summarize:
+	python3 scripts/summarize_results.py || python scripts/summarize_results.py
+
+plots:
+	python3 scripts/make_plots.py || python scripts/make_plots.py
 
 clean:
 	rm -rf $(BIN)

@@ -17,7 +17,7 @@ The program reads a CSV file of student roll numbers and marks in five subjects.
 
 ## Current status
 
-Checkpoint for 18 November 2026.
+Checkpoint for 24 November 2026.
 
 Completed:
 
@@ -27,12 +27,25 @@ Completed:
 - sequential version
 - OpenMP version
 - MPI version
+- automated correctness harness (scripts/check_correctness.sh)
+- dataset generation targets (small, medium, large) and Colab setup script
+- benchmark driver (scripts/run_benchmarks.sh)
+- machine information collector (scripts/machine_info.sh)
+- result summarization script (scripts/summarize_results.py)
+- plotting script (scripts/make_plots.py)
+
+Tested configurations on the small dataset:
+
+- Sequential baseline
+- OpenMP with 1, 2, 4, 8 threads
+- MPI with 1, 2, 4, 8 processes
 
 Planned for later commits:
 
 - hybrid MPI and OpenMP version
-- automated correctness and benchmark scripts
-- graphs and final report
+- false-sharing microbenchmark study
+- full benchmark runs and summary tables across all datasets
+- final report and packaging targets
 
 ## Repository layout
 
@@ -48,9 +61,20 @@ Group-01_ResultAnalysis/
 │   ├── openmp.c                OpenMP version
 │   ├── mpi.c                   MPI version
 │   └── gen_students.c          provided dataset generator
+├── scripts/
+│   ├── lib.sh                  shared shell helpers
+│   ├── check_correctness.sh    exact-diff correctness harness
+│   ├── setup_colab.sh          Colab and Ubuntu setup script
+│   ├── run_benchmarks.sh       benchmark driver
+│   ├── machine_info.sh         machine specification collector
+│   ├── summarize_results.py    result summarization script
+│   └── make_plots.py           plot generation script
 ├── tools/
 │   ├── mpicc                   Windows MPI compiler wrapper
 │   └── mpirun                  Windows MPI launcher wrapper
+├── results/
+│   ├── correctness/            small dataset test logs (.out and .err)
+│   └── machine_info.txt        collected machine specification
 ├── data/                       generated datasets, not committed
 └── bin/                        compiled programs, not committed
 ```
@@ -61,6 +85,7 @@ Group-01_ResultAnalysis/
 - GNU Make
 - OpenMP support in GCC
 - MPI compiler and launcher (Open MPI on Linux or Microsoft MPI on Windows)
+- Python 3 (standard library for summarizer, matplotlib for plotting)
 
 ## Build
 
@@ -78,14 +103,26 @@ bin/mpi
 
 On Windows the files end in `.exe`.
 
-## Create a dataset
+## Create datasets
 
-Build the provided generator first:
+Build the provided generator:
 
 ```bash
 make gen
-mkdir -p data
+```
+
+Generate datasets:
+
+```bash
+make datasets
+```
+
+Or generate individual datasets:
+
+```bash
 ./bin/gen_students 100000 data/small.csv
+./bin/gen_students 1000000 data/medium.csv
+./bin/gen_students 10000000 data/large.csv
 ```
 
 ## Run
@@ -114,9 +151,51 @@ On Windows, use the provided launcher:
 bash tools/mpirun -n 4 ./bin/mpi data/small.csv
 ```
 
+## Test and correctness
+
+Run the basic test targets:
+
+```bash
+make test
+```
+
+Run the exact-diff correctness check on small dataset:
+
+```bash
+DATASETS="small" make correctness
+```
+
+This compares each parallel configuration against the sequential baseline with `diff` after removing the `Time(analysis):` line.
+
+## Benchmarks and analysis
+
+Collect machine information:
+
+```bash
+make machine-info
+```
+
+Run benchmark repetitions:
+
+```bash
+DATASETS="small" RUNS=5 make bench
+```
+
+Summarize benchmark results into medians, speedup, and efficiency:
+
+```bash
+make summarize
+```
+
+Generate graphs from summarized results:
+
+```bash
+make plots
+```
+
 ## Output
 
-The program prints the statistics to standard output. It also prints a timing line to standard error:
+The program prints the eight statistics to standard output. It also prints a timing line to standard error:
 
 ```
 TIMING read=... analysis=... total=...
@@ -124,6 +203,6 @@ TIMING read=... analysis=... total=...
 
 ## Notes
 
-- Generated dataset files are not committed.
-- Compiled programs are not committed.
-- The hybrid version, benchmark scripts, graphs, and report are added in later milestones.
+- Generated dataset files (data/*.csv) are not committed.
+- Compiled programs (bin/*) are not committed.
+- The hybrid version, false-sharing experiment, full benchmark results, report, and packaging are added in later milestones.
