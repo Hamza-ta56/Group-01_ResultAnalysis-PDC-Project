@@ -1,0 +1,38 @@
+===== Machine information =====
+Collected: 2026-11-24 11:12:59 UTC
+
+--- Operating system ---
+MINGW64_NT-10.0-26300 HAMZA-TAHIR 3.6.6-1cdd4371.x86_64 2026-01-15 22:20 UTC x86_64 Msys
+Caption        : Microsoft Windows 11 Pro
+Version        : 10.0.26300
+OSArchitecture : 64-bit
+
+--- CPU ---
+
+
+Name                      : Intel(R) Core(TM) i5-8365U CPU @ 1.60GHz
+NumberOfCores             : 4
+NumberOfLogicalProcessors : 8
+
+
+
+nproc: 8
+
+--- Memory ---
+
+
+TotalPhysicalMemory : 8386813952
+
+
+
+
+--- Compilers and MPI ---
+gcc.exe (MinGW.org GCC Build-2) 9.2.0
+mpicc path: <none; Makefile falls back to tools/mpicc>
+launcher: Microsoft MPI (mpiexec), via tools/mpirun shim
+
+--- OpenMP ---
+OMP_NUM_THREADS=<unset: runtime default>
+
+--- Python (plotting only) ---
+Python 3.13.7

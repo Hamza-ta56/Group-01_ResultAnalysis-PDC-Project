@@ -26,7 +26,7 @@ OMP     := $(BIN)/omp$(EXE)
 MPIBIN  := $(BIN)/mpi$(EXE)
 GEN     := $(BIN)/gen_students$(EXE)
 
-.PHONY: all gen seq omp mpi datasets test correctness clean
+.PHONY: all gen seq omp mpi datasets test correctness bench machine-info clean
 
 all: seq omp mpi
 
@@ -66,6 +66,12 @@ test: all
 
 correctness: all
 	bash scripts/check_correctness.sh
+
+bench: all
+	bash scripts/run_benchmarks.sh
+
+machine-info:
+	bash scripts/machine_info.sh
 
 clean:
 	rm -rf $(BIN)
