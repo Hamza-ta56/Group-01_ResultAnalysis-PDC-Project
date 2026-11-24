@@ -27,6 +27,7 @@ Completed:
 - sequential version
 - OpenMP version
 - MPI version
+- hybrid MPI and OpenMP version
 - automated correctness harness (scripts/check_correctness.sh)
 - dataset generation targets (small, medium, large) and Colab setup script
 - benchmark driver (scripts/run_benchmarks.sh)
@@ -39,10 +40,10 @@ Tested configurations on the small dataset:
 - Sequential baseline
 - OpenMP with 1, 2, 4, 8 threads
 - MPI with 1, 2, 4, 8 processes
+- hybrid with 1x8, 2x4, 4x2 and 8x1 processes and threads
 
 Planned for later commits:
 
-- hybrid MPI and OpenMP version
 - false-sharing microbenchmark study
 - full benchmark runs and summary tables across all datasets
 - final report and packaging targets
@@ -60,6 +61,7 @@ Group-01_ResultAnalysis/
 │   ├── sequential.c            sequential version
 │   ├── openmp.c                OpenMP version
 │   ├── mpi.c                   MPI version
+│   ├── hybrid.c                hybrid MPI and OpenMP version
 │   └── gen_students.c          provided dataset generator
 ├── scripts/
 │   ├── lib.sh                  shared shell helpers
@@ -99,6 +101,7 @@ This builds:
 bin/seq
 bin/omp
 bin/mpi
+bin/hybrid
 ```
 
 On Windows the files end in `.exe`.
@@ -149,6 +152,18 @@ On Windows, use the provided launcher:
 
 ```bash
 bash tools/mpirun -n 4 ./bin/mpi data/small.csv
+```
+
+Hybrid version with two processes and four threads per process:
+
+```bash
+OMP_NUM_THREADS=4 mpiexec -n 2 ./bin/hybrid data/small.csv
+```
+
+On Windows:
+
+```bash
+OMP_NUM_THREADS=4 bash tools/mpirun -n 2 ./bin/hybrid data/small.csv
 ```
 
 ## Test and correctness
@@ -205,4 +220,4 @@ TIMING read=... analysis=... total=...
 
 - Generated dataset files (data/*.csv) are not committed.
 - Compiled programs (bin/*) are not committed.
-- The hybrid version, false-sharing experiment, full benchmark results, report, and packaging are added in later milestones.
+- The false-sharing measurements, full benchmark results, report, and packaging are added in later milestones.

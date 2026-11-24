@@ -1,7 +1,8 @@
 # CS-401 Parallel and Distributed Computing semester project
 # Group-01_ResultAnalysis
 #
-# Targets: all gen seq omp mpi datasets test clean
+# Targets: all gen seq omp mpi hybrid datasets test correctness bench \
+#          machine-info summarize plots clean
 
 CC       = gcc
 MPICC   ?= $(shell command -v mpicc 2>/dev/null || echo tools/mpicc)
@@ -24,12 +25,13 @@ HEADERS := src/common.h src/stats.h src/output.h
 SEQ     := $(BIN)/seq$(EXE)
 OMP     := $(BIN)/omp$(EXE)
 MPIBIN  := $(BIN)/mpi$(EXE)
+HYBRID  := $(BIN)/hybrid$(EXE)
 GEN     := $(BIN)/gen_students$(EXE)
 
-.PHONY: all gen seq omp mpi datasets test correctness bench machine-info \
+.PHONY: all gen seq omp mpi hybrid datasets test correctness bench machine-info \
         summarize plots clean
 
-all: seq omp mpi
+all: seq omp mpi hybrid
 
 # Provided dataset generator. Do not modify its behaviour.
 gen: $(GEN)
@@ -40,6 +42,7 @@ $(GEN): src/gen_students.c | $(BIN)
 seq: $(SEQ)
 omp: $(OMP)
 mpi: $(MPIBIN)
+hybrid: $(HYBRID)
 
 $(SEQ): src/sequential.c $(CORE) $(HEADERS) | $(BIN)
 	$(CC) $(CFLAGS) $(OMPFLAGS) $(LDFLAGS) $(CORE) src/sequential.c -o $@
@@ -49,6 +52,9 @@ $(OMP): src/openmp.c $(CORE) $(HEADERS) | $(BIN)
 
 $(MPIBIN): src/mpi.c $(CORE) $(HEADERS) | $(BIN)
 	$(MPICC) $(CFLAGS) $(LDFLAGS) $(CORE) src/mpi.c -o $@
+
+$(HYBRID): src/hybrid.c $(CORE) $(HEADERS) | $(BIN)
+	$(MPICC) $(CFLAGS) $(OMPFLAGS) $(LDFLAGS) $(CORE) src/hybrid.c -o $@
 
 $(BIN):
 	@mkdir -p $(BIN)
