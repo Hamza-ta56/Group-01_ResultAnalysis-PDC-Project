@@ -26,7 +26,7 @@ OMP     := $(BIN)/omp$(EXE)
 MPIBIN  := $(BIN)/mpi$(EXE)
 GEN     := $(BIN)/gen_students$(EXE)
 
-.PHONY: all gen seq omp mpi datasets test clean
+.PHONY: all gen seq omp mpi datasets test correctness clean
 
 all: seq omp mpi
 
@@ -63,6 +63,9 @@ test: all
 	./$(SEQ) $(DATA)/small.csv
 	@echo "== OpenMP 4 threads on small =="
 	OMP_NUM_THREADS=4 ./$(OMP) $(DATA)/small.csv
+
+correctness: all
+	bash scripts/check_correctness.sh
 
 clean:
 	rm -rf $(BIN)
