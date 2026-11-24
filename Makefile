@@ -26,7 +26,8 @@ OMP     := $(BIN)/omp$(EXE)
 MPIBIN  := $(BIN)/mpi$(EXE)
 GEN     := $(BIN)/gen_students$(EXE)
 
-.PHONY: all gen seq omp mpi datasets test correctness bench machine-info clean
+.PHONY: all gen seq omp mpi datasets test correctness bench machine-info \
+        summarize plots clean
 
 all: seq omp mpi
 
@@ -72,6 +73,12 @@ bench: all
 
 machine-info:
 	bash scripts/machine_info.sh
+
+summarize:
+	python3 scripts/summarize_results.py || python scripts/summarize_results.py
+
+plots:
+	python3 scripts/make_plots.py || python scripts/make_plots.py
 
 clean:
 	rm -rf $(BIN)
