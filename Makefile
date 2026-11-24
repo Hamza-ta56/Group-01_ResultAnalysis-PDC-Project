@@ -2,7 +2,7 @@
 # Group-01_ResultAnalysis
 #
 # Targets: all gen seq omp mpi hybrid datasets test correctness bench \
-#          machine-info summarize plots clean
+#          machine-info summarize plots false-sharing clean
 
 CC       = gcc
 MPICC   ?= $(shell command -v mpicc 2>/dev/null || echo tools/mpicc)
@@ -29,7 +29,7 @@ HYBRID  := $(BIN)/hybrid$(EXE)
 GEN     := $(BIN)/gen_students$(EXE)
 
 .PHONY: all gen seq omp mpi hybrid datasets test correctness bench machine-info \
-        summarize plots clean
+        summarize plots false-sharing clean
 
 all: seq omp mpi hybrid
 
@@ -85,6 +85,12 @@ summarize:
 
 plots:
 	python3 scripts/make_plots.py || python scripts/make_plots.py
+
+# Supporting microbenchmark for the report's false-sharing discussion.
+false-sharing: | $(BIN)
+	$(CC) $(CFLAGS) $(OMPFLAGS) experiments/false_sharing.c -o $(BIN)/false_sharing$(EXE)
+	./$(BIN)/false_sharing$(EXE) 100000000 > results/false_sharing.csv
+	@echo "wrote results/false_sharing.csv"
 
 clean:
 	rm -rf $(BIN)
